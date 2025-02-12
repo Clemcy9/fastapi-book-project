@@ -1,0 +1,36 @@
+name: Deploy FastAPI to AWS EC2
+
+on:
+  pull_request:
+    types:
+      - closed  # Trigger when a pull request is merged
+    branches:
+      - main  # Only deploy when PR is merged into main
+
+jobs:
+  deploy:
+    name: Deploy to EC2
+    if: github.event.pull_request.merged == true  # Ensure the PR is merged before deployment
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up SSH Key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.AWS_PRIVATE_KEY }}" > ~/.ssh/aws_key.pem
+          chmod 600 ~/.ssh/aws_key.pem
+          ssh-keyscan -H ${{ secrets.AWS_HOST }} >> ~/.ssh/known_hosts
+
+      - name: Deploy Application
+        run: |
+          ssh -i ~/.ssh/aws_key.pem ubuntu@${{ secrets.AWS_HOST }} << 'EOF'
+            cd ~/fastapi-book-project
+            git pull origin main  # Fetch latest changes
+            source venv/bin/activate
+            pip install -r requirements.txt  # Update dependencies
+            sudo systemctl restart fastapi  # Restart FastAPI service
+            sudo systemctl restart nginx  # Restart Nginx
+          EOF
