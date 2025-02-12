@@ -1,6 +1,9 @@
 name: CD pipeline
 
 on:
+  push:
+    branches:
+      - main
   pull_request:
     types:
       - closed  # Trigger when a pull request is merged
