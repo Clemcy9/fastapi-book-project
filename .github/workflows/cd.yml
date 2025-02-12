@@ -1,4 +1,4 @@
-name: Deploy FastAPI to AWS EC2
+name: CD pipeline
 
 on:
   pull_request:
