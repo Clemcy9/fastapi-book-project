@@ -129,6 +129,18 @@ The API includes proper error handling for:
 - Invalid genre types
 - Malformed requests
 
+## Automated workflow
+
+The API has both a CI and CD workflow:
+
+- CI: triggers on pull request; run automated pytest
+- CD: triggers on merge; automatically deploys to server (aws ec2)
+
+## CLoud hosting
+
+The API is publicly available on: [api link](http://3.137.175.163/api/v1/books/)
+
+
 ## Contributing
 
 1. Fork the repository
