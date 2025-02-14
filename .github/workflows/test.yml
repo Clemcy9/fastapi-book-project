@@ -21,4 +21,6 @@ jobs:
         run: pip install -r requirements.txt
 
       - name: Run Tests
-        run: pytest
+        run: |
+          source venv/bin/activate  
+          pytest
