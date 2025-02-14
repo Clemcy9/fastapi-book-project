@@ -13,7 +13,6 @@ on:
 jobs:
   deploy:
     name: Deploy to EC2
-    if: github.event.pull_request.merged == true  # Ensure the PR is merged before deployment
     runs-on: ubuntu-latest
 
     steps:
